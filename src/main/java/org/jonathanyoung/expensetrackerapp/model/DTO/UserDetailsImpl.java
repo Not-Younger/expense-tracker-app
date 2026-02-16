@@ -12,9 +12,9 @@ import java.util.stream.Stream;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private String username;
-    private String password;
-    private List<GrantedAuthority> authorities;
+    private final String username;
+    private final String password;
+    private final List<GrantedAuthority> authorities;
 
     public UserDetailsImpl(UserDTO userDTO) {
         this.username = userDTO.getUsername();

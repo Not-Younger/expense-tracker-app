@@ -1,9 +1,7 @@
 package org.jonathanyoung.expensetrackerapp.model.DTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,4 +23,8 @@ public class ExpenseDTO {
     private String category;
     private double price;
     private Instant date;
+
+    @ManyToOne
+    @JsonBackReference
+    private UserDTO user;
 }
