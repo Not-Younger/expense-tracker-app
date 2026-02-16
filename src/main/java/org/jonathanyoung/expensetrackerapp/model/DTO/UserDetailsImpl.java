@@ -1,6 +1,5 @@
-package org.jonathanyoung.expensetrackerapp.model;
+package org.jonathanyoung.expensetrackerapp.model.DTO;
 
-import org.jonathanyoung.expensetrackerapp.model.DTO.UserDTO;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +19,9 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(UserDTO userDTO) {
         this.username = userDTO.getUsername();
         this.password = userDTO.getPassword();
-        this.authorities = Stream.of(userDTO.getAuthorities().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        this.authorities = userDTO.getAuthorities().isBlank() ?
+                List.of(new SimpleGrantedAuthority("ROLE_USER")) :
+                Stream.of(userDTO.getAuthorities().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override

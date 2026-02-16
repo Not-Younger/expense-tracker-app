@@ -2,6 +2,7 @@ package org.jonathanyoung.expensetrackerapp.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jonathanyoung.expensetrackerapp.Exception.ExpenseException;
+import org.jonathanyoung.expensetrackerapp.config.JwtUtil;
 import org.jonathanyoung.expensetrackerapp.model.DTO.UserDTO;
 import org.jonathanyoung.expensetrackerapp.model.request.UserRequest;
 import org.jonathanyoung.expensetrackerapp.model.response.UserResponse;
@@ -15,10 +16,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     public UserResponse register(UserRequest request) {
@@ -32,11 +35,11 @@ public class UserService {
                 .authorities("")
                 .build());
 
-        // Generate token
+        String jwtToken = jwtUtil.generateKey(request.username());
 
         return UserResponse.builder()
                 .username(registeredUserDTO.getUsername())
-                .token("token")
+                .token(jwtToken)
                 .build();
     }
 
@@ -48,11 +51,11 @@ public class UserService {
             throw new ExpenseException("Invalid credentials.");
         }
 
-        // Generate token
+        String jwtToken = jwtUtil.generateKey(request.username());
 
         return UserResponse.builder()
                 .username(registeredUserDTO.getUsername())
-                .token("token")
+                .token(jwtToken)
                 .build();
     }
 }
